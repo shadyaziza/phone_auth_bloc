@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "72128916160",
+    "firebase_url": "https://phone-auth-bloc.firebaseio.com",
+    "project_id": "phone-auth-bloc",
+    "storage_bucket": "phone-auth-bloc.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:72128916160:android:a4036f2dbf0b77ee",
+        "android_client_info": {
+          "package_name": "com.example.phoneauthbloc"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "72128916160-fv726ij6157sp07p4ertactj0sv74bla.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.phoneauthbloc",
+            "certificate_hash": "5ec7ab8e19c50ff5b9ce84ad656c0b358e2cabfc"
+          }
+        },
+        {
+          "client_id": "72128916160-htu1v6ekitcvi0c4s18nv103bdri3lir.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCFBtChCMxBWCZwepLs_YippviEcI317dM"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "72128916160-htu1v6ekitcvi0c4s18nv103bdri3lir.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
