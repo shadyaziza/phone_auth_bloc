@@ -6,11 +6,21 @@ import './state_provider.dart';
 import './user_model.dart';
 import './common/conditional_builder.dart';
 import './common/loader.dart';
+import './landing.dart';
+import './views/auth/name_email.dart';
+import './views/home/home_view.dart';
+import './views/welcome/welcome_view.dart';
+
 class Root extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     GlobalBloc bloc = Provider.of<GlobalBloc>(context);
     return MaterialApp(
+      routes: {
+        '/name-email':(_)=>NameEmailScreen(),
+        '/welcome':(_)=>NameEmailScreen(),
+        '/home':(_)=>NameEmailScreen(),
+      },
       theme: ThemeData.dark(),
       home: StreamBuilder<bool>(
         stream: bloc.loading,
@@ -25,7 +35,9 @@ class Root extends StatelessWidget {
               builder: (_,AsyncSnapshot<User> user){
                 return ConditionalBuilder(
                   condition: user.hasData,
-                  trueBuilder: Scaffold(),
+                  trueBuilder: LandingControl(
+                    user: user.data,
+                  ),
                   falseBuilder: AuthViewContainer(),
                 );
               },
