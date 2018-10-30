@@ -60,7 +60,19 @@ class GlobalBloc {
   }
   
   void resendSMS(ErrorHandler errorHandler){
-   smsCode.throttle(Duration(seconds:30)).listen((_)=>signInWithPhoneNumber(errorHandler);
+   smsCode.throttle(Duration(seconds:30)).listen((_)=>signInWithPhoneNumber(errorHandler));
+  }
+
+  Future<void> updateUserInfo(String name, String email, ErrorHandler errorHandler)async {
+    try{
+      await _firebaseService.updateFirebaseUser(
+        email: email,
+        name:name,
+      );
+    }
+    catch(e){
+      errorHandler.onError(e.message);
+    }
   }
   void dispose() {
     _userSubject.close();

@@ -6,6 +6,8 @@ class FirebaseService {
   FirebaseUser _user;
   UserUpdateInfo _userInfo = UserUpdateInfo();
 
+  Future<FirebaseUser> get firebaseUserFuture async => _auth.currentUser();
+
   Stream<FirebaseUser> get firebaseUserStream => _auth.onAuthStateChanged;
 
   Future<void> verifyPhoneNumber(
@@ -19,13 +21,27 @@ class FirebaseService {
         },
         verificationCompleted: null,
         codeAutoRetrievalTimeout: null);
-
   }
 
   Future<FirebaseUser> signInWithPhoneNumber(
       String code, String verificationId) async {
     return await _auth.signInWithPhoneNumber(
         smsCode: code, verificationId: verificationId);
+  }
+
+  Future<void> updateFirebaseUser(
+      {String name, String email, String photoUrl}) async {
+    _user = await firebaseUserFuture;
+    if (name != null) {
+      _userInfo.displayName = name;
+    }
+    if (photoUrl != null) {
+      _userInfo.photoUrl = photoUrl;
+    }
+    if (email != null) {
+      _user.updateEmail(email);
+    }
+    await _user.updateProfile(_userInfo);
   }
 
   String onAuthError(dynamic exp, ErrorHandler errorHandler) {
