@@ -58,8 +58,9 @@ class GlobalBloc {
       errorHandler.onError(e.message);
     }
   }
+  
   void resendSMS(ErrorHandler errorHandler){
-    smsCode.throttle(Duration(seconds:30)).pipe(_smsCode);
+   smsCode.throttle(Duration(seconds:30)).listen((_)=>signInWithPhoneNumber(errorHandler);
   }
   void dispose() {
     _userSubject.close();
