@@ -3,6 +3,8 @@ import './common/loader.dart';
 import './global_bloc.dart';
 import './state_provider.dart';
 import './user_model.dart';
+import './views/auth/name_email.dart';
+import './views/home/home_view.dart';
 class LandingControl extends StatefulWidget {
   final User user;
 
@@ -15,17 +17,17 @@ class _LandingControlState extends State<LandingControl> {
   
   @override
   void initState() {
-    if(widget.user.isNew){
-      Navigator.pushNamed(context, '/name-email');
-    }
-    else{
-      Navigator.pushNamed(context, '/home');
-    }
+   
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Loader();
+     if(widget.user.isNew){
+     return Scaffold(body: NameEmailScreen()); 
+    }
+    else{
+     return HomeViewContainer();
+    }
   }
 }
