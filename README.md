@@ -1,6 +1,6 @@
 # phone_auth_bloc
 
-A new Flutter project.
+A simple application that uses bloc pattern to showcase Firebase phone authentication and amnaging new users' flow.
 
 ## Getting Started
 
