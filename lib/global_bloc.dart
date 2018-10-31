@@ -10,9 +10,9 @@ import './error_handler.dart';
 
 class GlobalBloc {
   GlobalBloc() {
-    _loadingSubject.sink.add(true);
+   
     _firebaseService.firebaseUserStream.listen(_sinkUserSubject);
-    _loadingSubject.sink.add(false);
+    
   }
   FirebaseService _firebaseService = FirebaseService();
   ErrorHandler _errorHandler;
@@ -27,11 +27,14 @@ class GlobalBloc {
   Observable<String> get verificationId => _verificationId.stream;
 
   BehaviorSubject<String> _smsCode = BehaviorSubject<String>();
-  Observable<String> get smsCode=>_smsCode.stream;
-  Function(String) get changeSmsCode=>_smsCode.sink.add;
+  Observable<String> get smsCode => _smsCode.stream;
+  Function(String) get changeSmsCode => _smsCode.sink.add;
 
-  void _sinkUserSubject(user) {
-    _userSubject.sink.add(User.fromGlobalBloc(user));
+  Future<void> _sinkUserSubject(user)async {
+     _loadingSubject.sink.add(true);
+    _userSubject.sink.add(User.fromFirebaseUser(user));
+    await Future.delayed(Duration(seconds: 2));
+    _loadingSubject.sink.add(false);
   }
 
   Future<void> verifyPhoneNumber(
@@ -48,32 +51,49 @@ class GlobalBloc {
         _verificationId.sink.add(code);
       };
 
-  Future<void> signInWithPhoneNumber(
-     ErrorHandler errorHandler) async {
+  Future<void> signInWithPhoneNumber(ErrorHandler errorHandler) async {
     _errorHandler = errorHandler;
     try {
-      _userSubject.sink.add(User.fromGlobalBloc(await _firebaseService
+      _userSubject.sink.add(User.fromFirebaseUser(await _firebaseService
           .signInWithPhoneNumber(_smsCode.value, _verificationId.value)));
     } catch (e) {
       errorHandler.onError(e.message);
     }
+    
   }
-  
-  void resendSMS(ErrorHandler errorHandler){
-   smsCode.throttle(Duration(seconds:30)).listen((_)=>signInWithPhoneNumber(errorHandler));
+
+  void resendSMS(ErrorHandler errorHandler) {
+    smsCode
+        .throttle(Duration(seconds: 30))
+        .listen((_) => signInWithPhoneNumber(errorHandler));
   }
 
   Future<void> updateUserInfo(String name, String email, ErrorHandler errorHandler)async {
-    try{
-      await _firebaseService.updateFirebaseUser(
+    try {
+     await _firebaseService.updateFirebaseUser(
         email: email,
-        name:name,
+        name: name,
       );
-    }
-    catch(e){
+    } catch (e) {
       errorHandler.onError(e.message);
     }
   }
+
+  Future<void> sinkUserChanges(String name,String email) async{
+   _userSubject.sink.add(User.fromUserChanges(_userSubject.value,name,email));
+  }
+
+  Future<void> signOut(ErrorHandler errorHandler) async {
+    try {
+      _firebaseService.signOut();
+    } catch (e) {
+      errorHandler.onError(e.message);
+    }
+
+    ///We must reset the [verificationId] in order to show [PhoneScreen] instead of [SMSScreen] on [signOut]
+    _verificationId.sink.add(null);
+  }
+
   void dispose() {
     _userSubject.close();
     _loadingSubject.close();

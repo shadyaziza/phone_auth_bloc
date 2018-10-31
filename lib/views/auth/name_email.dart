@@ -46,8 +46,10 @@ class _NameEmailScreenState extends State<NameEmailScreen>
         ]);
   }
 
-  void _onSaveButtonPressed(GlobalBloc bloc) {
-    bloc.updateUserInfo(_name, _email, this);
+  Future<void> _onSaveButtonPressed(GlobalBloc bloc)async {
+   await bloc.updateUserInfo(_name, _email, this);
+   await bloc.sinkUserChanges(_name,_email);
+    Navigator.of(context).pushNamedAndRemoveUntil('/welcome',(Route r)=>r==null);
   }
 
   @override

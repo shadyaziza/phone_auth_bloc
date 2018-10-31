@@ -2,8 +2,16 @@ import 'package:flutter/material.dart';
 import '../../global_bloc.dart';
 import '../../state_provider.dart';
 import '../../user_model.dart';
+import '../../error_handler.dart';
 
-class HomeViewContainer extends StatelessWidget {
+class HomeViewContainer extends StatefulWidget {
+  @override
+  HomeViewContainerState createState() {
+    return new HomeViewContainerState();
+  }
+}
+
+class HomeViewContainerState extends State<HomeViewContainer> implements ErrorHandler {
   @override
   Widget build(BuildContext context) {
     final GlobalBloc bloc = Provider.of<GlobalBloc>(context);
@@ -11,16 +19,31 @@ class HomeViewContainer extends StatelessWidget {
         body: StreamBuilder(
             stream: bloc.user,
             builder: (_, AsyncSnapshot<User> user) {
-              return Column(children: [
-                Text(user.data.uid),
-                Text(user.data.displayName),
-                Text(user.data.email),
+              return Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                Text(user.data?.uid??''),
+                Text(user.data?.displayName??''),
+                Text(user.data?.email??''),
 
                 RaisedButton(
                   child:Text('Sign Out'),
-                  onPressed:(){}
+                  onPressed:()=>_onSignOutPressed(bloc)
                 )
               ]);
             }));
+  }
+
+  Future<void> _onSignOutPressed(GlobalBloc bloc)async{
+   await bloc.signOut(this);
+   Navigator.of(context).pushNamed('/auth');
+  }
+
+  @override
+  void onError(String message) {
+     Scaffold.of(context).showSnackBar(SnackBar(
+      content: Text(message),
+    ));
   }
 }

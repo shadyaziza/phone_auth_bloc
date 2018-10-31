@@ -6,17 +6,19 @@ class WelcomeView extends StatefulWidget {
 
 class _WelcomeViewState extends State<WelcomeView> {
   @override
-    void initState() {
-      Future.delayed(Duration(seconds: 3));
-      Navigator.of(context).pushNamed('/home');
-      super.initState();
-    }
+  void initState() {
+    _delay();
+    super.initState();
+  }
+Future<void> _delay()async{
+  await Future.delayed(Duration(seconds: 3));
+    Navigator.of(context)
+        .pushNamedAndRemoveUntil('/home', (Route r) => r == null);
+}
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-       body:Center(
-         child:Text('Welcome Screen')
-       ),
+      body: Center(child: Text('Welcome Screen')),
     );
   }
 }

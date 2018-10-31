@@ -5,29 +5,22 @@ import './state_provider.dart';
 import './user_model.dart';
 import './views/auth/name_email.dart';
 import './views/home/home_view.dart';
-class LandingControl extends StatefulWidget {
-  final User user;
+import './common/conditional_builder.dart';
+import './common/loader.dart';
 
-  const LandingControl({Key key,@required this.user}) : super(key: key);
-  @override
-  _LandingControlState createState() => new _LandingControlState();
-}
-
-class _LandingControlState extends State<LandingControl> {
-  
-  @override
-  void initState() {
-   
-    super.initState();
-  }
-
+class LandingControl extends  StatelessWidget{
   @override
   Widget build(BuildContext context) {
-     if(widget.user.isNew){
-     return Scaffold(body: NameEmailScreen()); 
-    }
-    else{
-     return HomeViewContainer();
-    }
+   
+   return StreamBuilder<User>(
+     stream:Provider.of<GlobalBloc>(context).user,
+     builder: (_,AsyncSnapshot<User> user){
+       return ConditionalBuilder(
+         condition: user.data?.displayName==null,
+         trueBuilder: Scaffold(body: NameEmailScreen()),
+         falseBuilder: HomeViewContainer(),
+       );
+     },
+   );
   }
 }

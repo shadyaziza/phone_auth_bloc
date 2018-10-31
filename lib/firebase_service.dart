@@ -6,7 +6,7 @@ class FirebaseService {
   FirebaseUser _user;
   UserUpdateInfo _userInfo = UserUpdateInfo();
 
-  Future<FirebaseUser> get firebaseUserFuture async => _auth.currentUser();
+  Future<FirebaseUser> get firebaseUserFuture async =>await _auth.currentUser();
 
   Stream<FirebaseUser> get firebaseUserStream => _auth.onAuthStateChanged;
 
@@ -42,8 +42,12 @@ class FirebaseService {
       _user.updateEmail(email);
     }
     await _user.updateProfile(_userInfo);
+    await _user.reload();
+    
   }
-
+  Future<void> signOut()async{
+   await _auth.signOut();
+  }
   String onAuthError(dynamic exp, ErrorHandler errorHandler) {
     errorHandler.onError(exp.message);
     return exp.message;

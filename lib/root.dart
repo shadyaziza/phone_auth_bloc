@@ -16,36 +16,39 @@ class Root extends StatelessWidget {
   Widget build(BuildContext context) {
     GlobalBloc bloc = Provider.of<GlobalBloc>(context);
     return MaterialApp(
-      routes: {
-        '/name-email':(_)=>NameEmailScreen(),
-        '/welcome':(_)=>NameEmailScreen(),
-        '/home':(_)=>NameEmailScreen(),
-      },
-      theme: ThemeData.dark(),
-      home: StreamBuilder<bool>(
-        stream: bloc.loading,
-        initialData: true,
-        builder: (_,AsyncSnapshot<bool> loading){
-          // FirebaseAuth.instance.signOut();
-          return ConditionalBuilder(
-            condition:loading?.data,
-            trueBuilder:Loader(),
-            falseBuilder: StreamBuilder(
-              stream: bloc.user,
-              builder: (_,AsyncSnapshot<User> user){
-                return ConditionalBuilder(
-                  condition: user.hasData,
-                  trueBuilder: LandingControl(
-                    user: user.data,
-                  ),
-                  falseBuilder: AuthViewContainer(),
-                );
-              },
-            ),
-
-          );
+        routes: {
+          '/auth': (_) => AuthViewContainer(),
+          '/landing': (_) => LandingControl(),
+          '/name-email': (_) => Scaffold(body: NameEmailScreen()),
+          '/welcome': (_) => WelcomeView(),
+          '/home': (_) => HomeViewContainer(),
         },
-      )
-    );
+        theme: ThemeData.dark(),
+        home: StreamBuilder<bool>(
+          stream: bloc.loading,
+          initialData: true,
+          builder: (_, AsyncSnapshot<bool> loading) {
+            return ConditionalBuilder(
+              condition: loading?.data,
+              trueBuilder: Loader(),
+              falseBuilder: StreamBuilder(
+                stream: bloc.user,
+                builder: (_, AsyncSnapshot<User> user) {
+                  return ConditionalBuilder(
+                    condition: user.hasData ,
+                    trueBuilder: LandingControl(
+                    
+                    ),
+                    falseBuilder: ConditionalBuilder(
+                      condition: user.hasData && user.data?.displayName == null,
+                      trueBuilder: Scaffold(body: NameEmailScreen()),
+                      falseBuilder: AuthViewContainer(),
+                    ),
+                  );
+                },
+              ),
+            );
+          },
+        ));
   }
 }

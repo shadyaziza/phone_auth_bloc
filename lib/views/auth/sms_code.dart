@@ -11,7 +11,7 @@ class SMSCodeScreen extends StatefulWidget {
 }
 
 class SMSCodeScreenState extends State<SMSCodeScreen> implements ErrorHandler {
-  String _code;
+
   @override
   Widget build(BuildContext context) {
     final GlobalBloc bloc = Provider.of<GlobalBloc>(context);
@@ -45,8 +45,12 @@ class SMSCodeScreenState extends State<SMSCodeScreen> implements ErrorHandler {
         ]);
   }
 
-  void _onVerifyButtonPressed(GlobalBloc bloc) {
-    bloc.signInWithPhoneNumber( this);
+  Future<void> _onVerifyButtonPressed(GlobalBloc bloc) async{
+   await bloc.signInWithPhoneNumber(this);
+  //  await bloc.sinkCurrentUser();
+   
+   Navigator.of(context).pushNamedAndRemoveUntil('/landing',(Route r)=>r==null);
+
   }
   void onResendTapped(GlobalBloc bloc){
     bloc.resendSMS(this);
