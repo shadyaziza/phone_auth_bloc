@@ -25,7 +25,7 @@ class SubscriptionBloc {
   Future<void> _getPackages()async{
     List<Package> _ = [];
     try{
-      
+    
    QuerySnapshot packagesQuery =  await _ser.getAllPackages();
    packagesQuery.documents.forEach((DocumentSnapshot doc){
      ///We do not care for [Meal]s right now because this method handles fetching the
