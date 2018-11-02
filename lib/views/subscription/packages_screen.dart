@@ -7,11 +7,12 @@ import '../../common/conditional_builder.dart';
 import '../../common/loader.dart';
 import '../../state_provider.dart';
 
-class PackagesScreen extends StatelessWidget{
+class PackagesScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+  SubscriptionBloc bloc=  Provider.of<SubscriptionBloc>(context);
     return StreamBuilder<UnmodifiableListView<Package>>(
-      stream: Provider.of<SubscriptionBloc>(context).allPackages,
+      stream: bloc.allPackages,
       builder: (_, AsyncSnapshot<UnmodifiableListView<Package>> packages) {
         ///Tired of importing [ConditionalBuilder] :D
         return ConditionalBuilder(
@@ -26,24 +27,29 @@ class PackagesScreen extends StatelessWidget{
                       desc: packages.data[index]?.desc,
                       name: packages.data[index]?.name,
                       price: packages.data[index]?.price,
+                      onChoosePackagePressed:()=> _onChoosePackagePressed(bloc,packages.data[index]),
                     );
                   })),
         );
       },
     );
   }
+  void _onChoosePackagePressed(SubscriptionBloc bloc,Package p){
+    bloc.choosePackage(p);
+  }
 }
 
 class PackageCard extends StatefulWidget {
   final String name, desc;
   final int price, comboPrice;
+  final VoidCallback onChoosePackagePressed;
 
   PackageCard(
       {Key key,
       @required this.name,
       @required this.desc,
       @required this.price,
-      @required this.comboPrice})
+      @required this.comboPrice,@required this.onChoosePackagePressed})
       : super(key: key);
   @override
   PackageCardState createState() {
@@ -66,18 +72,19 @@ class PackageCardState extends State<PackageCard> {
           children: [
             Text(widget.name),
             Text(widget.desc),
-           ! _isCombo
+            !_isCombo
                 ? Text('Total: ${widget.price.toString()}')
                 : Text('Total: ${widget.comboPrice.toString()}'),
-           Row(
-             mainAxisAlignment: MainAxisAlignment.center,
-             children: <Widget>[
-              Checkbox(
-              value: _isCombo,
-              onChanged: _changeCombo,
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Checkbox(
+                  value: _isCombo,
+                  onChanged: _changeCombo,
+                ),
+                Text('Combo')
+              ],
             ),
-            Text('Combo')
-           ],),
             RaisedButton(
               child: Text('CHOOSE PACKAGE'),
               onPressed: () {},

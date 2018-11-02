@@ -41,6 +41,10 @@ class SubscriptionBloc {
     _allPackagesSubject.add(UnmodifiableListView(_));
   }
 
+  Future<void> choosePackage(Package p)async{
+    
+  }
+
   void _generateDateList(DateTime date,
       BehaviorSubject<UnmodifiableListView<DateTime>> subject, int limit) {
     ///Generate a temporary list of next 30 days including today
