@@ -15,41 +15,44 @@ class _NameEmailScreenState extends State<NameEmailScreen>
   @override
   Widget build(BuildContext context) {
     final GlobalBloc bloc = Provider.of<GlobalBloc>(context);
-    return Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          TextField(
-            onChanged: (String name) {
-              _name = name;
-            },
-            decoration: InputDecoration(
-                filled: true,
-                fillColor: Theme.of(context).scaffoldBackgroundColor,
-                prefix: Icon(Icons.person),
-                hintText: 'My Name',
-                labelText: 'Please enter your name'),
-          ),
-          TextField(
-            onChanged: (String email) {
-              _email = email;
-            },
-            decoration: InputDecoration(
-                filled: true,
-                fillColor: Theme.of(context).scaffoldBackgroundColor,
-                prefix: Icon(Icons.email),
-                hintText: 'E-mail',
-                labelText: 'Please enter your email'),
-          ),
-          RaisedButton(
-              child: Text('SAVE'), onPressed: () => _onSaveButtonPressed(bloc))
-        ]);
+    return Padding(
+      padding:  EdgeInsets.symmetric(horizontal: 25.0),
+      child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            TextField(
+              onChanged: (String name) {
+                _name = name;
+              },
+              decoration: InputDecoration(
+                  filled: true,
+                  fillColor: Theme.of(context).scaffoldBackgroundColor,
+                  prefix: Icon(Icons.person),
+                  hintText: 'My Name',
+                  labelText: 'Please enter your name'),
+            ),
+            TextField(
+              onChanged: (String email) {
+                _email = email;
+              },
+              decoration: InputDecoration(
+                  filled: true,
+                  fillColor: Theme.of(context).scaffoldBackgroundColor,
+                  prefix: Icon(Icons.email),
+                  hintText: 'E-mail',
+                  labelText: 'Please enter your email'),
+            ),
+            RaisedButton(
+                child: Text('SAVE'), onPressed: () => _onSaveButtonPressed(bloc))
+          ]),
+    );
   }
 
   Future<void> _onSaveButtonPressed(GlobalBloc bloc)async {
    await bloc.updateUserInfo(_name, _email, this);
-   await bloc.sinkUserChanges(_name,_email);
-    Navigator.of(context).pushNamedAndRemoveUntil('/welcome',(Route r)=>r==null);
+   
+    
   }
 
   @override
@@ -57,5 +60,11 @@ class _NameEmailScreenState extends State<NameEmailScreen>
     Scaffold.of(context).showSnackBar(SnackBar(
       content: Text(message),
     ));
+  }
+
+  @override
+  void onSuccess() {
+    Navigator.of(context).pushNamedAndRemoveUntil('/welcome',(Route r)=>r==null);
+    
   }
 }

@@ -1,4 +1,4 @@
-package com.example.phoneauthbloc;
+package com.cantina.customer.rewrite;
 
 import android.os.Bundle;
 import io.flutter.app.FlutterActivity;

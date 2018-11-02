@@ -43,11 +43,17 @@ class PhoneNumberScreenState extends State<PhoneNumberScreen>
 
   void _onSubmitButtonPressed(GlobalBloc bloc) {
     bloc.verifyPhoneNumber(_number,this);
+    
   }
 
   void onError(String message) {
     Scaffold.of(context).showSnackBar(SnackBar(
       content: Text(message),
     ));
+  }
+
+  @override
+  void onSuccess() {
+    // TODO: implement onSuccess
   }
 }

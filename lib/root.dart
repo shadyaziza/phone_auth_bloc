@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import './views/auth/auth_view_container.dart';
 import './global_bloc.dart';
 import './state_provider.dart';
-import './user_model.dart';
+import './models/user_model.dart';
 import './common/conditional_builder.dart';
 import './common/loader.dart';
 import './landing.dart';
@@ -16,6 +16,7 @@ class Root extends StatelessWidget {
   Widget build(BuildContext context) {
     GlobalBloc bloc = Provider.of<GlobalBloc>(context);
     return MaterialApp(
+        theme: ThemeData(fontFamily: 'Cardo',primarySwatch:Colors.green),
         routes: {
           '/auth': (_) => AuthViewContainer(),
           '/landing': (_) => LandingControl(),
@@ -23,7 +24,6 @@ class Root extends StatelessWidget {
           '/welcome': (_) => WelcomeView(),
           '/home': (_) => HomeViewContainer(),
         },
-        theme: ThemeData.dark(),
         home: StreamBuilder<bool>(
           stream: bloc.loading,
           initialData: true,
@@ -35,16 +35,9 @@ class Root extends StatelessWidget {
                 stream: bloc.user,
                 builder: (_, AsyncSnapshot<User> user) {
                   return ConditionalBuilder(
-                    condition: user.hasData ,
-                    trueBuilder: LandingControl(
-                    
-                    ),
-                    falseBuilder: ConditionalBuilder(
-                      condition: user.hasData && user.data?.displayName == null,
-                      trueBuilder: Scaffold(body: NameEmailScreen()),
-                      falseBuilder: AuthViewContainer(),
-                    ),
-                  );
+                      condition: user.hasData,
+                      trueBuilder: LandingControl(),
+                      falseBuilder: AuthViewContainer());
                 },
               ),
             );

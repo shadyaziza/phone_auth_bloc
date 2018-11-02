@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import './error_handler.dart';
+import '../error_handler.dart';
 
-class FirebaseService {
+class AuthService {
   FirebaseAuth _auth = FirebaseAuth.instance;
   FirebaseUser _user;
   UserUpdateInfo _userInfo = UserUpdateInfo();
@@ -39,12 +39,13 @@ class FirebaseService {
       _userInfo.photoUrl = photoUrl;
     }
     if (email != null) {
-      _user.updateEmail(email);
+     await _user.updateEmail(email);
     }
     await _user.updateProfile(_userInfo);
     await _user.reload();
     
   }
+  
   Future<void> signOut()async{
    await _auth.signOut();
   }

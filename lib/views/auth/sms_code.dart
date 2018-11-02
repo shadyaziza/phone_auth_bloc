@@ -49,7 +49,7 @@ class SMSCodeScreenState extends State<SMSCodeScreen> implements ErrorHandler {
    await bloc.signInWithPhoneNumber(this);
   //  await bloc.sinkCurrentUser();
    
-   Navigator.of(context).pushNamedAndRemoveUntil('/landing',(Route r)=>r==null);
+  //  Navigator.of(context).pushNamedAndRemoveUntil('/landing',(Route r)=>r==null);
 
   }
   void onResendTapped(GlobalBloc bloc){
@@ -61,5 +61,10 @@ class SMSCodeScreenState extends State<SMSCodeScreen> implements ErrorHandler {
     Scaffold.of(context).showSnackBar(SnackBar(
       content: Text(message),
     ));
+  }
+
+  @override
+  void onSuccess() {
+     Navigator.of(context).pushNamedAndRemoveUntil('/landing',(Route r)=>r==null);
   }
 }

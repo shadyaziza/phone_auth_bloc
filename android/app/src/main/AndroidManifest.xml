@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.phoneauthbloc">
+    package="com.cantina.customer.rewrite">
 
     <!-- The INTERNET permission is required for development. Specifically,
          flutter needs it to communicate with the running application
