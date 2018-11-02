@@ -11,7 +11,7 @@ class User {
       this.photoUrl, this.isNew, this.expirationTimeStamp, this.place);
   factory User.fromFirebaseUser(
       FirebaseUser user, Map<String, dynamic> userDoc) {
-    return user != null && userDoc != null
+    return user != null
         ? User._(
             user.uid,
             user.phoneNumber,
@@ -19,8 +19,8 @@ class User {
             user.email,
             user.photoUrl,
             user.displayName == null ? true : false,
-            userDoc['expirationDate'] ?? null,
-            userDoc['place'])
+            userDoc != null ? userDoc['expirationDate'] : null,
+            userDoc != null ? userDoc['place'] : null)
         : null;
   }
   factory User.fromUserChanges(User user, String name, String email) {

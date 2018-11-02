@@ -31,12 +31,21 @@ class GlobalBloc {
 
   Future<void> _sinkUserSubject(FirebaseUser user) async {
     _loadingSubject.sink.add(true);
+    DocumentSnapshot userDoc;
     try {
-      DocumentSnapshot userDoc = await _userService.getUserDoc(user.uid);
-      _userSubject.sink.add(User.fromFirebaseUser(user, userDoc.data));
+      ///Otherwise will throw an excpetion if the user is not available
+      if (user != null) {
+        ///Otherwise will throw an excpetion if the user is using the app for first time
+        ///userDoc was not yet created when the user uses the app for the first time
+        if(user.displayName!=null){
+        userDoc = await _userService.getUserDoc(user.uid);
+        }
+        _userSubject.sink.add(User.fromFirebaseUser(user, userDoc?.data));
+      }
     } catch (e) {
       ///A small challenge for you, how to benfit from [ErrorHandler] here
       ///what can we do to bind the UI to give user feedback if an excpetion were to be thrown
+     
       print(e.toString());
     }
     _loadingSubject.sink.add(false);
@@ -65,6 +74,7 @@ class GlobalBloc {
           _smsCode.value, _verificationId.value));
       errorHandler.onSuccess();
     } catch (e) {
+      print(e.toString());
       errorHandler.onError(e.toString());
     }
   }

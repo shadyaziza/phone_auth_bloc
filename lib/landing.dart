@@ -24,6 +24,9 @@ class LandingControl extends StatelessWidget {
             ///to have the full app flow available for testing
             ///The [null] check is useful if the [User] is using the app for the first time, we do not expect them
             ///to have an [expirationDate]
+            ///
+            ///
+            ///`There is a critical issue here, no time for me to fix it, up to you, check the logs to know what I am talking about`
             condition: user.data?.expirationTimeStamp == null ||
                 DateTime.fromMillisecondsSinceEpoch(
                         user.data?.expirationTimeStamp)

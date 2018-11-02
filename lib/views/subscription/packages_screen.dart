@@ -8,9 +8,13 @@ import '../../common/loader.dart';
 import '../../state_provider.dart';
 
 class PackagesScreen extends StatelessWidget {
+  final Function(int) animateToPage;
+
+  PackagesScreen({Key key, @required this.animateToPage}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
-  SubscriptionBloc bloc=  Provider.of<SubscriptionBloc>(context);
+    SubscriptionBloc bloc = Provider.of<SubscriptionBloc>(context);
     return StreamBuilder<UnmodifiableListView<Package>>(
       stream: bloc.allPackages,
       builder: (_, AsyncSnapshot<UnmodifiableListView<Package>> packages) {
@@ -27,15 +31,18 @@ class PackagesScreen extends StatelessWidget {
                       desc: packages.data[index]?.desc,
                       name: packages.data[index]?.name,
                       price: packages.data[index]?.price,
-                      onChoosePackagePressed:()=> _onChoosePackagePressed(bloc,packages.data[index]),
+                      onChoosePackagePressed: () =>
+                          _onChoosePackagePressed(bloc, packages.data[index]),
                     );
                   })),
         );
       },
     );
   }
-  void _onChoosePackagePressed(SubscriptionBloc bloc,Package p){
+
+  void _onChoosePackagePressed(SubscriptionBloc bloc, Package p) {
     bloc.choosePackage(p);
+    animateToPage(1);
   }
 }
 
@@ -49,7 +56,8 @@ class PackageCard extends StatefulWidget {
       @required this.name,
       @required this.desc,
       @required this.price,
-      @required this.comboPrice,@required this.onChoosePackagePressed})
+      @required this.comboPrice,
+      @required this.onChoosePackagePressed})
       : super(key: key);
   @override
   PackageCardState createState() {
@@ -87,7 +95,7 @@ class PackageCardState extends State<PackageCard> {
             ),
             RaisedButton(
               child: Text('CHOOSE PACKAGE'),
-              onPressed: () {},
+              onPressed:widget.onChoosePackagePressed,
             )
           ]),
     );
