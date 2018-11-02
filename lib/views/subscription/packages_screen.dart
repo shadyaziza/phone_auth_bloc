@@ -67,12 +67,17 @@ class PackageCardState extends State<PackageCard> {
             Text(widget.name),
             Text(widget.desc),
            ! _isCombo
-                ? Text(widget.price.toString())
-                : Text(widget.comboPrice.toString()),
-            Checkbox(
+                ? Text('Total: ${widget.price.toString()}')
+                : Text('Total: ${widget.comboPrice.toString()}'),
+           Row(
+             mainAxisAlignment: MainAxisAlignment.center,
+             children: <Widget>[
+              Checkbox(
               value: _isCombo,
               onChanged: _changeCombo,
             ),
+            Text('Combo')
+           ],),
             RaisedButton(
               child: Text('CHOOSE PACKAGE'),
               onPressed: () {},
