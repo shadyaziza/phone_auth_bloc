@@ -6,11 +6,12 @@ import '../services/subscription_service.dart';
 import '../models/package_model.dart';
 class SubscriptionBloc {
   SubscriptionBloc() {
+
     _getPackages();
     _generateDateList(DateTime.now(), _dateListSubject, 10);
     _generateTimes();
   }
-  SubscriptionService _ser;
+  SubscriptionService _ser = SubscriptionService();
   BehaviorSubject<UnmodifiableListView<Package>> _allPackagesSubject =
       BehaviorSubject<UnmodifiableListView<Package>>();
   Observable<UnmodifiableListView<Package>> get allPackages =>
@@ -22,15 +23,22 @@ class SubscriptionBloc {
       _dateListSubject.stream;
 
   Future<void> _getPackages()async{
+    List<Package> _ = [];
     try{
+      
    QuerySnapshot packagesQuery =  await _ser.getAllPackages();
    packagesQuery.documents.forEach((DocumentSnapshot doc){
-
+     ///We do not care for [Meal]s right now because this method handles fetching the
+     ///all [Package]s so user can select one, we will fetch the meals only when the user
+     ///finally selects a certain [Package]
+     _.add(Package.fromBloc(doc.data, []));
    });
     }catch(e){
       ///Same challenge as the one in [GlobalBloc] :D
-      print(e.message);
+      print(e.toString());
     }
+    ///We can do the following inside [onSuccess], I will leave that to you to think which is better
+    _allPackagesSubject.add(UnmodifiableListView(_));
   }
 
   void _generateDateList(DateTime date,

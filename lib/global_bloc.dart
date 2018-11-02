@@ -37,7 +37,7 @@ class GlobalBloc {
     } catch (e) {
       ///A small challenge for you, how to benfit from [ErrorHandler] here
       ///what can we do to bind the UI to give user feedback if an excpetion were to be thrown
-      print(e.message);
+      print(e.toString());
     }
     _loadingSubject.sink.add(false);
   }
@@ -47,7 +47,7 @@ class GlobalBloc {
     try {
       await _authService.verifyPhoneNumber(number, errorHandler, codeSent);
     } catch (e) {
-      errorHandler.onError(e.message);
+      errorHandler.onError(e.toString());
     }
   }
 
@@ -65,7 +65,7 @@ class GlobalBloc {
           _smsCode.value, _verificationId.value));
       errorHandler.onSuccess();
     } catch (e) {
-      errorHandler.onError(e.message);
+      errorHandler.onError(e.toString());
     }
   }
 

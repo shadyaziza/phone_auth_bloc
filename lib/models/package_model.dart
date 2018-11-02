@@ -1,7 +1,7 @@
 import './meals.dart';
 
 class Package {
-  final String name, desc, uid;
+  final String name, desc, uid, photoUrl;
   final int price, comboPrice, skippableDays, days;
   final bool isCombo, available;
   final List<Meal> meals;
@@ -16,6 +16,7 @@ class Package {
       this.available,
       this.days,
       this.uid,
+      this.photoUrl,
       this.meals});
 
   factory Package.fromBloc(Map<String, dynamic> packageMap, List<Meal> meals) {
@@ -26,6 +27,7 @@ class Package {
             comboPrice: packageMap['comboPrice'],
             desc: packageMap['description'],
             days: packageMap['days'],
+            photoUrl: packageMap['photoUrl'],
 
             ///isCombo is controlled from front-end side, however, I am using a new appraoch I am testing
             ///The idea is to unify the [factory] as much as possible, so anytime [Package] is going to be updated

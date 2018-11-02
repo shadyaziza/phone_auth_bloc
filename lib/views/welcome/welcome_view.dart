@@ -13,7 +13,7 @@ class _WelcomeViewState extends State<WelcomeView> {
 Future<void> _delay()async{
   await Future.delayed(Duration(seconds: 3));
     Navigator.of(context)
-        .pushNamedAndRemoveUntil('/home', (Route r) => r == null);
+        .pushNamedAndRemoveUntil('/landing', (Route r) => r == null);
 }
   @override
   Widget build(BuildContext context) {

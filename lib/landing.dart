@@ -8,6 +8,7 @@ import './views/home/home_view.dart';
 import './common/conditional_builder.dart';
 import './common/loader.dart';
 import './views/subscription/subscription_view_container.dart';
+import './scoped_blocs/subscription_bloc.dart';
 
 class LandingControl extends StatelessWidget {
   @override
@@ -27,7 +28,13 @@ class LandingControl extends StatelessWidget {
                 DateTime.fromMillisecondsSinceEpoch(
                         user.data?.expirationTimeStamp)
                     .isAfter(DateTime.now()),
-            trueBuilder: SubscriptionViewContainer(),
+            trueBuilder: StatefulProvider<SubscriptionBloc>(
+                valueBuilder:
+                    (BuildContext context, SubscriptionBloc oldBloc) =>
+                        oldBloc ?? SubscriptionBloc(),
+                onDispose: (BuildContext context, SubscriptionBloc bloc) =>
+                    bloc.dispose(),
+                child: SubscriptionViewContainer()),
             falseBuilder: HomeViewContainer(),
           ),
         );
