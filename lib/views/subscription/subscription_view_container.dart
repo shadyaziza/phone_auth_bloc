@@ -3,6 +3,7 @@ import '../../state_provider.dart';
 import '../../scoped_blocs/subscription_bloc.dart';
 import './packages_screen.dart';
 import './choose_date_screen.dart';
+
 class SubscriptionViewContainer extends StatefulWidget {
   @override
   SubscriptionViewContainerState createState() {
@@ -29,11 +30,16 @@ class SubscriptionViewContainerState extends State<SubscriptionViewContainer> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        body: PageView(controller: _pCont, children: [
-      PackagesScreen(animateToPage:_animateToPage),
-      ChooseDateScreen(animateToPage:_animateToPage)
-    ]));
+    return StatefulProvider<SubscriptionBloc>(
+        valueBuilder: (BuildContext context, SubscriptionBloc oldBloc) =>
+            oldBloc ?? SubscriptionBloc(),
+        onDispose: (BuildContext context, SubscriptionBloc bloc) =>
+            bloc.dispose(),
+        child: Scaffold(
+            body: PageView(controller: _pCont, children: [
+          PackagesScreen(animateToPage: _animateToPage),
+          ChooseDateScreen(animateToPage: _animateToPage)
+        ])));
   }
 
   void _animateToPage(int index) {

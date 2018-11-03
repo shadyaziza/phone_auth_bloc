@@ -27,12 +27,14 @@ class PackagesScreen extends StatelessWidget {
                   itemCount: packages.data?.length,
                   itemBuilder: (_, int index) {
                     return PackageCard(
+                      bloc: bloc,
+                      package: packages.data[index],
+                      animateToPage:animateToPage,
                       comboPrice: packages.data[index]?.comboPrice,
                       desc: packages.data[index]?.desc,
                       name: packages.data[index]?.name,
                       price: packages.data[index]?.price,
-                      onChoosePackagePressed: () =>
-                          _onChoosePackagePressed(bloc, packages.data[index]),
+                      
                     );
                   })),
         );
@@ -40,24 +42,27 @@ class PackagesScreen extends StatelessWidget {
     );
   }
 
-  void _onChoosePackagePressed(SubscriptionBloc bloc, Package p) {
-    bloc.choosePackage(p);
-    animateToPage(1);
-  }
+ 
 }
 
 class PackageCard extends StatefulWidget {
+  final SubscriptionBloc bloc;
+  final Package package;
   final String name, desc;
   final int price, comboPrice;
-  final VoidCallback onChoosePackagePressed;
+  // final VoidCallback onChoosePackagePressed;
+  final Function(int) animateToPage;
 
   PackageCard(
       {Key key,
+      @required this.package,
       @required this.name,
       @required this.desc,
       @required this.price,
       @required this.comboPrice,
-      @required this.onChoosePackagePressed})
+      // @required this.onChoosePackagePressed,
+      @required this.bloc, 
+      @required this.animateToPage})
       : super(key: key);
   @override
   PackageCardState createState() {
@@ -95,7 +100,10 @@ class PackageCardState extends State<PackageCard> {
             ),
             RaisedButton(
               child: Text('CHOOSE PACKAGE'),
-              onPressed:widget.onChoosePackagePressed,
+              onPressed: (){
+                widget.bloc.choosePackage(widget.package,_isCombo);
+                widget.animateToPage(1);
+              },
             )
           ]),
     );

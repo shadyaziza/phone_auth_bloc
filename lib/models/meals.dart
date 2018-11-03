@@ -24,7 +24,7 @@ class Meal {
         }
         else{
           List<String> _productKeys=[];
-          mealMap['productKeys'].froEach((key,_){
+          mealMap['products'].forEach((key,_){
             _productKeys.add(key);
           });
           return Meal._(

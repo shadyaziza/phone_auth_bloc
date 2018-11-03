@@ -26,9 +26,17 @@ class Package {
       return null;
     } else {
       List<String> _mealsKey = [];
-      packageMap['allowedMeals'].forEach((mealKey, mealCount) {
-        _mealsKey.add(mealKey.toString());
-      });
+      ///Imporant, because I do not care about `allowedMeals` after user selects a pckage
+      ///we already fetch ALL [Meal]s under tha package, with all the data
+      ///Only thing is missing is I do not add the count for each allowed [Meal],
+      ///but that is an easy job for you
+      if (packageMap['allowedMeals']!=null) {
+        ///Critical issue here regarding typing, I can not really solve it right now,
+        ///debug to understand the problem and fix it
+        packageMap['allowedMeals'].forEach((mealKey, mealCount) {
+          _mealsKey.add(mealKey);
+        });
+      }
       return Package._(
           available: packageMap['available'],
           comboPrice: packageMap['comboPrice'],

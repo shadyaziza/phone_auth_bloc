@@ -31,13 +31,7 @@ class LandingControl extends StatelessWidget {
                 DateTime.fromMillisecondsSinceEpoch(
                         user.data?.expirationTimeStamp)
                     .isAfter(DateTime.now()),
-            trueBuilder: StatefulProvider<SubscriptionBloc>(
-                valueBuilder:
-                    (BuildContext context, SubscriptionBloc oldBloc) =>
-                        oldBloc ?? SubscriptionBloc(),
-                onDispose: (BuildContext context, SubscriptionBloc bloc) =>
-                    bloc.dispose(),
-                child: SubscriptionViewContainer()),
+            trueBuilder:  SubscriptionViewContainer(),
             falseBuilder: HomeViewContainer(),
           ),
         );
